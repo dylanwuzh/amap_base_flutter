@@ -356,11 +356,22 @@ object AddMarkers : MapMethodHandler {
 
         log("方法marker#addMarkers android端参数: optionsListJson -> $optionsListJson")
 
-        val optionsList = ArrayList(optionsListJson.parseFieldJson<List<UnifiedMarkerOptions>>().map { it.toMarkerOption() })
+        val optionsList = ArrayList(optionsListJson.parseFieldJson<List<UnifiedMarkerOptions>>().map {it.toMarkerOption() })
+        optionsList.forEach {
+            it.icon(BitmapDescriptorFactory.fromView(getBitmapView(mActivity)))
+        }
         if (clear) map.mapScreenMarkers.forEach { it.remove() }
         map.addMarkers(optionsList, moveToCenter)
 
         result.success(success)
+    }
+
+    private fun getBitmapView(context: Context):View {
+        val layout = LinearLayout(context);
+        TextView tvTitle = new TextView(context);
+        tvTitle.text = "测试";
+        layout.addView(tvTitle);
+        return layout;
     }
 }
 
